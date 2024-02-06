@@ -64,8 +64,8 @@ async def account_login(bot: Client, m: Message):
             res = session.get(f'{api}/course/content/get', params=params)
 
             if res.status_code == 200:
-                res = res.json()
-                contents = res['data']['courseContent']
+                res_json = res.json()
+                contents = res_json['data']['courseContent']
 
                 for content in contents:
                     if content['contentType'] == 1:
@@ -126,8 +126,8 @@ async def account_login(bot: Client, m: Message):
                 res = session.get(f'{api}/orgs/{org_code}')
 
                 if res.status_code == 200:
-                    res = res.json()
-                    org_id = int(res['data']['orgId'])
+                    res_json = res.json()
+                    org_id = int(res_json['data']['orgId'])
 
                     data = {
                         'countryExt': '91',
@@ -141,8 +141,8 @@ async def account_login(bot: Client, m: Message):
                     res = session.post(f'{api}/otp/generate', data=json.dumps(data))
 
                     if res.status_code == 200:
-                        res = res.json()
-                        session_id = res['data']['sessionId']
+                        res_json = res.json()
+                        session_id = res_json['data']['sessionId']
 
                         reply = await m.reply(
                             (
@@ -167,10 +167,10 @@ async def account_login(bot: Client, m: Message):
                             res = session.post(f'{api}/users/verify', data=json.dumps(data))
 
                             if res.status_code == 200:
-                                res = res.json()
+                                res_json = res.json()
 
-                                user_id = res['data']['user']['id']
-                                token = res['data']['token']
+                                user_id = res_json['data']['user']['id']
+                                token = res_json['data']['token']
 
                                 session.headers['x-access-token'] = token
 
@@ -210,8 +210,8 @@ async def account_login(bot: Client, m: Message):
             res = session.get(f'{api}/users/details')
 
             if res.status_code == 200:
-                res = res.json()
-                user_id = res['data']['responseData']['user']['id']
+                res_json = res.json()
+                user_id = res_json['data']['responseData']['user']['id']
                 logged_in = True
 
             else:
@@ -226,8 +226,8 @@ async def account_login(bot: Client, m: Message):
             res = session.get(f'{api}/profiles/users/data', params=params)
 
             if res.status_code == 200:
-                res = res.json()
-                courses = res['data']['responseData']['coursesData']
+                res_json = res.json()
+                courses = res_json['data']['responseData']['coursesData']
 
                 if courses:
                     text = ''
@@ -318,5 +318,4 @@ async def account_login(bot: Client, m: Message):
 
 # Start the bot
 bot.run()
-
 
